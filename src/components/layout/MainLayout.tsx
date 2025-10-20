@@ -4,7 +4,8 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Children, createElement } from "react";
+import {  Children, createElement } from "react";
+import { Outlet } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
 const items: MenuProps["items"] = [
   {
@@ -71,7 +72,7 @@ const MainLayout = () => {
               padding: 24,
               minHeight: 360,
             }}>
-            <h1>The main content should be there</h1>
+            {Outlet && <Outlet />}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
