@@ -1,6 +1,7 @@
 import { Layout, Menu } from "antd";
 import { Outlet } from "react-router-dom";
-import { adminSliderItems } from "../../routes/admin.routes";
+import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
+import { adminPaths } from "../../routes/admin.routes";
 const { Header, Content, Footer, Sider } = Layout;
 const MainLayout = () => {
   return (
@@ -29,7 +30,7 @@ const MainLayout = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={["4"]}
-          items={adminSliderItems}
+          items={sidebarItemsGenerator(adminPaths, "admin")}
         />
       </Sider>
       <Layout>
