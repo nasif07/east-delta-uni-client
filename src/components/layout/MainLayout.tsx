@@ -1,39 +1,7 @@
-import { Layout, Menu, type MenuProps } from "antd";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import {  Children, createElement } from "react";
+import { Layout, Menu } from "antd";
 import { Outlet } from "react-router-dom";
+import { adminSliderItems } from "../../routes/admin.routes";
 const { Header, Content, Footer, Sider } = Layout;
-const items: MenuProps["items"] = [
-  {
-    key: "1",
-    icon: createElement(UserOutlined),
-    label: "nav 1",
-  },
-  {
-    key: "2",
-    icon: createElement(UserOutlined),
-    label: "nav 1",
-  },
-  {
-    key: "3",
-    icon: createElement(UserOutlined),
-    label: "nav 3",
-    children: [
-      {
-        key: "3-1",
-        label: "subnav 1",
-      },
-      {
-        key: "3-2",
-        label: "subnav 2",
-      },
-    ],
-  },
-];
 const MainLayout = () => {
   return (
     <Layout style={{ height: "100vh" }}>
@@ -61,7 +29,7 @@ const MainLayout = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={["4"]}
-          items={items}
+          items={adminSliderItems}
         />
       </Sider>
       <Layout>
