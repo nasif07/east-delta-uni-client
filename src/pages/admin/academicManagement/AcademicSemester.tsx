@@ -1,6 +1,4 @@
-
-
-const CreateFaculty = () => {
+const AcademicSemester = () => {
     return (
         <div>
             
@@ -8,4 +6,4 @@ const CreateFaculty = () => {
     );
 };
 
-export default CreateFaculty;
+export default AcademicSemester;
