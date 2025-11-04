@@ -30,14 +30,12 @@ const CreateAcademicSemester = () => {
   };
 
   const academicSemesterSchema = z.object({
-    name: z.enum(
-      nameOptions.map((option) => option.value) as [string, ...string[]]
-    ),
+    name: z.string({ required_error: "Semester name is required" }),
     year: z.string().refine((val) => {
       return yearOptions.some((option) => option.value === val);
     }),
     startMonth: z.enum(
-      monthOptions.map((option) => option.value) as [string, ...string[ ]]
+      monthOptions.map((option) => option.value) as [string, ...string[]]
     ),
     endMonth: z.enum(
       monthOptions.map((option) => option.value) as [string, ...string[]]
