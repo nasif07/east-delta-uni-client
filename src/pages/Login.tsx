@@ -1,11 +1,13 @@
-import { Button } from "antd";
-import { useForm } from "react-hook-form";
+import { Button, Row } from "antd";
+import { useForm, useFormContext } from "react-hook-form";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { useAppDispatch } from "../redux/hooks";
 import { setUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import EDForm from "../components/form/EDForm";
+import EDInput from "../components/form/EDInput";
 
 type LoginFormInputs = {
   id: string;
@@ -16,15 +18,15 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { register, handleSubmit } = useForm<LoginFormInputs>({
-    defaultValues: {
-      id: "0001",
-      password: "admin12345",
-    },
-  });
+
+  const defaultValues = {
+    id: "0001",
+    password: "admin12345",
+  };
 
   const [login] = useLoginMutation();
   const onsubmit = async (data: LoginFormInputs) => {
+    console.log(data);
     const toastId = toast.loading("Logging in... ");
     try {
       const userinfo = {
@@ -44,17 +46,13 @@ const Login = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onsubmit)}>
-      <div>
-        <label htmlFor="id">ID: </label>
-        <input type="text" id="id" {...register("id")} />
-      </div>
-      <div>
-        <label htmlFor="id">Password: </label>
-        <input type="text" id="password" {...register("password")} />
-      </div>
-      <Button htmlType="submit">Login</Button>
-    </form>
+    <Row justify={"center"} align={"middle"} style={{ height: "100vh" }}>
+      <EDForm onSubmit={onsubmit} defaultValues={defaultValues}>
+          <EDInput type={"text"} name="id" label="Id" />
+          <EDInput type={"password"} name="password" label="Password" />
+        <Button htmlType="submit">Login</Button>
+      </EDForm>
+    </Row>
   );
 };
 
