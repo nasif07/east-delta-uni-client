@@ -5,7 +5,10 @@ import EDSelect from "../../../components/form/EDSelect";
 import { semesterOptions } from "../../../constants/semester";
 import { monthOptions } from "../../../constants/global";
 import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
+import { academicSemesterSchema } from "../../../schemas/academicManagement.schema";
+import { useAddAcademicSemesterMutation } from "../../../redux/features/admin/academicManagement.api";
+import { toast } from "sonner";
+import type { TResponse } from "../../../types/global";
 
 const nameOptions = semesterOptions;
 
@@ -17,7 +20,10 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => {
 });
 
 const CreateAcademicSemester = () => {
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const [addAcademicSemester] = useAddAcademicSemesterMutation();
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Creating academic semester...");
     const name = nameOptions[Number(data.name - 1)].label;
     const semesterData = {
       name: name,
@@ -26,21 +32,26 @@ const CreateAcademicSemester = () => {
       startMonth: data.startMonth,
       endMonth: data.endMonth,
     };
-    console.log(semesterData);
+
+    try {
+      console.log(semesterData);
+      const res = (await addAcademicSemester(semesterData)) as TResponse;
+      // await addAcademicSemester(semesterData).unwrap();
+      if (res.error) {
+        toast.error(
+          res?.error?.data?.message || "Failed to create academic semester",
+          { id: toastId }
+        );
+      } else {
+        toast.success("Academic semester created successfully", {
+          id: toastId,
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to create academic semester", { id: toastId });
+    }
   };
 
-  const academicSemesterSchema = z.object({
-    name: z.string({ required_error: "Semester name is required" }),
-    year: z.string().refine((val) => {
-      return yearOptions.some((option) => option.value === val);
-    }),
-    startMonth: z.enum(
-      monthOptions.map((option) => option.value) as [string, ...string[]]
-    ),
-    endMonth: z.enum(
-      monthOptions.map((option) => option.value) as [string, ...string[]]
-    ),
-  });
   return (
     <Flex justify="center" align="middle">
       <Col span={6}>

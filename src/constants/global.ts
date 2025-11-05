@@ -12,7 +12,7 @@ export const monthNames = [
   "November",
   "December",
 ];
-export const monthOptions = monthNames.map((month, index) => ({
+export const monthOptions = monthNames.map((month) => ({
   value: month,
   label: month,
 }));

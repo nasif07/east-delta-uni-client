@@ -1,5 +1,4 @@
 import { Button, Row } from "antd";
-import { useForm, useFormContext } from "react-hook-form";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { useAppDispatch } from "../redux/hooks";
 import { setUser } from "../redux/features/auth/authSlice";
@@ -20,7 +19,7 @@ const Login = () => {
 
 
   const defaultValues = {
-    id: "0001",
+    id: "0002",
     password: "admin12345",
   };
 
