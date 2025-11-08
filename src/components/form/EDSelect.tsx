@@ -4,10 +4,11 @@ import { Controller } from "react-hook-form";
 type TEDSelectProps = {
   label: string;
   name: string;
+  disabled?: boolean;
   options?: { value: string; label: string; disabled?: boolean }[];
 };
 
-const EDSelect = ({ label, name, options }: TEDSelectProps) => {
+const EDSelect = ({ label, name, options, disabled }: TEDSelectProps) => {
   return (
     <Controller
       name={name}
@@ -18,6 +19,7 @@ const EDSelect = ({ label, name, options }: TEDSelectProps) => {
             {...field}
             options={options}
             size="large"
+            disabled={disabled}
           />
           {error && <p style={{ color: "red" }}>{error.message}</p>}
         </Form.Item>
