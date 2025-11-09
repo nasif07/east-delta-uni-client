@@ -1,11 +1,16 @@
-import type { FieldValues, SubmitHandler } from "react-hook-form";
+import {
+  Controller,
+  type FieldValues,
+  type SubmitHandler,
+} from "react-hook-form";
 import EDForm from "../../../components/form/EDForm";
 import EDInput from "../../../components/form/EDInput";
-import { Button, Col, Divider, Row } from "antd";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
 import EDSelect from "../../../components/form/EDSelect";
 import { bloodGroupOptions, genderOptions } from "../../../constants/global";
 import EDDatePicker from "../../../components/form/EDDatePicker";
 import { useGetAllSemesterQuery } from "../../../redux/features/admin/academicManagement.api";
+import { useAddStudentMutation } from "../../../redux/features/admin/userManagement.api";
 
 const studentData = {
   password: "student123",
@@ -41,7 +46,7 @@ const studentData = {
     },
 
     // admissionSemester: "65b0104110b74fcbd7a25d92",
-    // academicDepartment: "65b00fb010b74fcbd7a25d8e",
+    academicDepartment: "test",
   },
 };
 
@@ -50,6 +55,9 @@ const studentDefaultValues = {
 };
 
 const CreateStudent = () => {
+  const [addStudent, { data, error }] = useAddStudentMutation();
+
+  console.log({ data, error });
   const { data: sData, isLoading: sIsLoading } =
     useGetAllSemesterQuery(undefined);
 
@@ -57,11 +65,21 @@ const CreateStudent = () => {
     label: `${semester.name} ${semester.year}`,
     value: semester._id,
   }));
+  const academicDepartmentOption = sData?.data?.map((semester) => ({
+    label: `${semester.name} ${semester.year}`,
+    value: semester._id,
+  }));
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
-    // const formData = new FormData();
-    // formData.append("data", JSON.stringify(data));
+    const studentData = {
+      student: data,
+      password: "student123",
+    };
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(studentData));
+    formData.append("file", data.image);
+    // addStudent(formData);
+    console.log(studentData);
 
     // !this if for development just for checking
     // console.log(Object.fromEntries(formData));
@@ -96,6 +114,21 @@ const CreateStudent = () => {
                 options={bloodGroupOptions}
                 name="bloogGroup"
                 label="Blood Group"
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <Controller
+                name="image"
+                render={({ field: { onChange, value, ...field } }) => (
+                  <Form.Item label={"Picture"}>
+                    <Input
+                      type="file"
+                      {...field}
+                      value={value?.fileName}
+                      onChange={(e) => onChange(e.target.files?.[0])}
+                    />
+                  </Form.Item>
+                )}
               />
             </Col>
             <Divider>Contact Info</Divider>
@@ -197,7 +230,7 @@ const CreateStudent = () => {
             <Divider>Academic Info</Divider>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <EDSelect
-              disabled={sIsLoading}
+                disabled={sIsLoading}
                 options={semesterOptions}
                 name="admissionSemester"
                 label="Admission Semester"
@@ -205,7 +238,7 @@ const CreateStudent = () => {
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <EDSelect
-                options={semesterOptions}
+                options={academicDepartmentOption}
                 name="academicDepartment"
                 label="Academic Department"
               />

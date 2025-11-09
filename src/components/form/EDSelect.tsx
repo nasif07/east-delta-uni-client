@@ -5,7 +5,7 @@ type TEDSelectProps = {
   label: string;
   name: string;
   disabled?: boolean;
-  options?: { value: string; label: string; disabled?: boolean }[];
+  options?: { value: string; label: string; disabled?: boolean }[] | undefined;
 };
 
 const EDSelect = ({ label, name, options, disabled }: TEDSelectProps) => {
